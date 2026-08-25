@@ -1,0 +1,23 @@
+# Compiled Java class files
+*.class
+
+# Log files
+*.log
+
+# Maven build directory
+target/
+
+# IntelliJ IDEA workspace & settings
+.idea/
+*.iml
+*.iws
+*.ipr
+out/
+
+# OS generated files
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+# Crash logs
+hs_err_pid*
