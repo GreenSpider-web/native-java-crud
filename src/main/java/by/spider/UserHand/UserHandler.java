@@ -1,4 +1,4 @@
-package by.spider;
+package by.spider.UserHand;
 
 
 import java.io.DataInputStream;
