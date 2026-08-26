@@ -20,7 +20,7 @@ public class PropertiesUtil {
         }
     }
 
-    public String get(String key){
+    public static String get(String key){
         return PROPERTIES.getProperty(key);
     }
 

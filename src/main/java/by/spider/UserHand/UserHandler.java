@@ -1,12 +1,15 @@
 package by.spider.UserHand;
 
 
+import by.spider.UserDao.UserDao;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.sql.SQLException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -53,11 +56,7 @@ public class UserHandler
                 case "GET" -> handleGet(requestPath, outputStream);
                 case "POST" -> handlePOST();
                 default -> throw new RuntimeException("Unknown request type: " + requestType);
-
-
             }
-
-
 
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -66,10 +65,15 @@ public class UserHandler
 
     private void handlePOST() {
 
+
     }
 
     private void handleGet(String requestPath, OutputStream outputStream) {
-
+        try {
+            UserDao.getListUsers();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 
 
