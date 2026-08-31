@@ -30,7 +30,7 @@ public class UserHandler
     public void run()
     {
         while(true) {
-            try (var ServerSocket = new ServerSocket(port);
+            try (var ServerSocket = new ServerSocket(port)
                  ) {
                 var socket = ServerSocket.accept();
                 executor.submit(() -> processSocket(socket));
@@ -61,7 +61,7 @@ public class UserHandler
             String requestType = firstLine.split(" ")[0];
             String requestPath = firstLine.split(" ")[1];
 
-            String body = "";
+            String body;
             int bodyIndex = requestText.indexOf("\r\n\r\n");
             if(bodyIndex != -1){
                 body = requestText.substring(bodyIndex +4);
