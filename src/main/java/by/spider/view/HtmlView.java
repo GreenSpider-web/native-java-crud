@@ -30,4 +30,26 @@ public class HtmlView {
 
         return html.toString();
     }
+
+    public static String successfullyRequest(){
+        StringBuilder html = new StringBuilder();
+        html.append("<!DOCTYPE html><html><body>");
+        html.append("<h1>Реєстрація успішна</h1>");
+        html.append("<p>Користувача успішно додано.</p>");
+        html.append("<a href=\"/allUsers\">Переглянути список користувачів</a>");
+        html.append("</body></html>");
+
+        return html.toString();
+
+    }
+    public static String notFound() {
+        StringBuilder html = new StringBuilder();
+        html.append("<!DOCTYPE html><html><body>");
+        html.append("<h1>Сторінку не знайдено</h1>");
+        html.append("<p>Такого шляху не існує на сервері.</p>");
+        html.append("<a href=\"/allUsers\">Переглянути список користувачів</a>");
+        html.append("</body></html>");
+
+        return html.toString();
+    }
 }

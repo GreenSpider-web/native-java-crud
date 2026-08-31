@@ -18,7 +18,7 @@ public class ConnectionManager {
                     PropertiesUtil.get(PASS_KEY)
             );
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Не вдалося відкрити з'єднання з базою даних", e);
         }
     }
 

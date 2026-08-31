@@ -22,18 +22,20 @@ public class UserDao {
             var result = statement.executeQuery(sqlRequest);
             while (result.next()) {
                 String name = result.getString("name");
-                String last_name = result.getString("last_name");
+                String last_name = result.getString("lastname");
                 String email = result.getString("email");
                 int number = result.getInt("number");
-                User user = new User(name, last_name, email, number);
+                User user = User.builder().name(name).last_name(last_name).email(email).number(number).build();
                 users.add(user);
             }
+        }catch (SQLException e) {
+            throw new RuntimeException("Помилка INSERT в базу даних", e);
         }
         return users;
     }
 
     public static void handleUserPOST(User user) {
-        String slqRequest = "INSERT INTO users (name, last_name, email, number) VALUES (?, ?, ?, ?)";
+        String slqRequest = "INSERT INTO users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionManager.open();
              var statement = connection.prepareStatement(slqRequest);
         ) {
@@ -41,11 +43,12 @@ public class UserDao {
             statement.setString(2, user.getLast_name());
             statement.setString(3, user.getEmail());
             statement.setInt(4, user.getNumber());
+            statement.executeUpdate();
 
 
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Не вдалося зберегти користувача з email: " + user.getEmail(), e);
         }
 
     }

@@ -13,10 +13,13 @@ public class PropertiesUtil {
     private static void loadProperties() {
         try (var inputStream = PropertiesUtil.class.getClassLoader()
                 .getResourceAsStream("application.properties")) {
+            if (inputStream == null) {
+                throw new IllegalStateException("Файл application.properties не знайдено в папці resources!");
+            }
             PROPERTIES.load(inputStream);
 
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new RuntimeException("Помилка читання конфігураційного файлу application.properties", e);
         }
     }
 
