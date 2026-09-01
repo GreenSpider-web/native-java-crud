@@ -15,7 +15,7 @@ public class UserDao {
     public static List<User> getListUsers() throws SQLException {
         List<User> users = new ArrayList<>();
         String sqlRequest = """
-                select * from users;
+                select * from users.users;
                 """;
         try (var connection = open()) {
             var statement = connection.createStatement();
@@ -28,14 +28,14 @@ public class UserDao {
                 User user = User.builder().name(name).last_name(last_name).email(email).number(number).build();
                 users.add(user);
             }
-        }catch (SQLException e) {
-            throw new RuntimeException("Помилка INSERT в базу даних", e);
+        } catch (SQLException e) {
+            throw new RuntimeException("Помилка SELECT в базу даних", e);
         }
         return users;
     }
 
     public static void handleUserPOST(User user) {
-        String slqRequest = "INSERT INTO users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
+        String slqRequest = "INSERT INTO users.users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
         try (Connection connection = ConnectionManager.open();
              var statement = connection.prepareStatement(slqRequest)
         ) {
