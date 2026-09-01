@@ -2,13 +2,13 @@ package by.spider.model;
 
 public class User {
     private final String name;
-    private final String last_name;
+    private final String lastname;
     private final String email;
     private final int number;
 
     public User(UserBuilder userBuilder){
         this.name = userBuilder.name;
-        this.last_name = userBuilder.last_name;
+        this.lastname = userBuilder.last_name;
         this.email = userBuilder.email;
         this.number = userBuilder.number;
     }
@@ -17,8 +17,8 @@ public class User {
         return name;
     }
 
-    public String getLast_name() {
-        return last_name;
+    public String getLastname() {
+        return lastname;
     }
 
     public String getEmail() {
@@ -46,7 +46,7 @@ public class User {
             }
             return this;
         }
-        public UserBuilder last_name(String last_name){
+        public UserBuilder lastname(String last_name){
             if(last_name != null && !last_name.isBlank()){
                 this.last_name = last_name;
             }

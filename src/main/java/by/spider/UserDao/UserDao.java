@@ -25,7 +25,7 @@ public class UserDao {
                 String last_name = result.getString("lastname");
                 String email = result.getString("email");
                 int number = result.getInt("number");
-                User user = User.builder().name(name).last_name(last_name).email(email).number(number).build();
+                User user = User.builder().name(name).lastname(last_name).email(email).number(number).build();
                 users.add(user);
             }
         } catch (SQLException e) {
@@ -40,7 +40,7 @@ public class UserDao {
              var statement = connection.prepareStatement(slqRequest)
         ) {
             statement.setString(1, user.getName());
-            statement.setString(2, user.getLast_name());
+            statement.setString(2, user.getLastname());
             statement.setString(3, user.getEmail());
             statement.setInt(4, user.getNumber());
             statement.executeUpdate();
