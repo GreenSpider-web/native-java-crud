@@ -7,7 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import static by.spider.UserDao.ConnectionManager.open;
+import static by.spider.UserDao.ConnectionManager.getConnection;
 
 
 public class UserDao {
@@ -17,7 +17,7 @@ public class UserDao {
         String sqlRequest = """
                 select * from users.users;
                 """;
-        try (var connection = open()) {
+        try (var connection = getConnection()) {
             var statement = connection.createStatement();
             var result = statement.executeQuery(sqlRequest);
             while (result.next()) {
@@ -29,6 +29,7 @@ public class UserDao {
                 users.add(user);
             }
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Помилка SELECT в базу даних", e);
         }
         return users;
@@ -36,7 +37,7 @@ public class UserDao {
 
     public static void handleUserPOST(User user) {
         String slqRequest = "INSERT INTO users.users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
-        try (Connection connection = ConnectionManager.open();
+        try (Connection connection = getConnection();
              var statement = connection.prepareStatement(slqRequest)
         ) {
             statement.setString(1, user.getName());
@@ -48,6 +49,7 @@ public class UserDao {
 
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException("Не вдалося зберегти користувача з email: " + user.getEmail(), e);
         }
 
