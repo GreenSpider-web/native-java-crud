@@ -77,10 +77,6 @@ public class UserHandler
             }
 
             if ("POST".equalsIgnoreCase(requestType)) {
-                if (!"/users".equalsIgnoreCase(path) && !"/register".equalsIgnoreCase(path)) {
-                    writeResponse.sendHtmlResponse(outputStream, 404, HtmlView.notFound());
-                    return;
-                }
 
                 String body = "";
                 int bodyIndex = requestText.indexOf("\r\n\r\n");
