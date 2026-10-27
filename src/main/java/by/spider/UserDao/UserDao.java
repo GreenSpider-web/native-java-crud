@@ -36,9 +36,9 @@ public class UserDao {
     }
 
     public static void handleUserPOST(User user) {
-        String slqRequest = "INSERT INTO users.users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
+        String sqlRequest = "INSERT INTO users.users (name, lastname, email, number) VALUES (?, ?, ?, ?)";
         try (Connection connection = getConnection();
-             var statement = connection.prepareStatement(slqRequest)
+             var statement = connection.prepareStatement(sqlRequest)
         ) {
             statement.setString(1, user.getName());
             statement.setString(2, user.getLastname());
