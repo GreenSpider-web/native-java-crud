@@ -14,7 +14,8 @@ public class UserDao {
 
     public static List<User> getListUsers() throws SQLException {
         List<User> users = new ArrayList<>();
-        String sqlRequest = """
+        String sqlRequest =
+                """
                 select * from users.users;
                 """;
         try (var connection = open()) {
@@ -24,7 +25,7 @@ public class UserDao {
                 String name = result.getString("name");
                 String last_name = result.getString("lastname");
                 String email = result.getString("email");
-                int number = result.getInt("number");
+                String number = result.getString("number");
                 User user = User.builder().name(name).lastname(last_name).email(email).number(number).build();
                 users.add(user);
             }
@@ -42,7 +43,7 @@ public class UserDao {
             statement.setString(1, user.getName());
             statement.setString(2, user.getLastname());
             statement.setString(3, user.getEmail());
-            statement.setInt(4, user.getNumber());
+            statement.setString(4, user.getNumber());
             statement.executeUpdate();
 
 
