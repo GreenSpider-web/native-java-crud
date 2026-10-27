@@ -21,3 +21,6 @@ Desktop.ini
 
 # Crash logs
 hs_err_pid*
+
+# Local configuration with secrets
+src/main/resources/application.properties
