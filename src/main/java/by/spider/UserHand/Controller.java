@@ -39,6 +39,7 @@ public class Controller
             UserDao.handleUserPOST(user);
             writeResponse.sendHtmlResponse(outputStream, 200, HtmlView.successfullyRequest());
         } catch (Exception e) {
+            e.printStackTrace();
             try {
                 writeResponse.sendHtmlResponse(outputStream, 500, "<html><body><h1>Помилка сервера</h1><p>Не вдалося зберегти користувача.</p></body></html>");
             } catch (IOException ioException) {
@@ -62,6 +63,7 @@ public class Controller
 
             writeResponse.sendHtmlResponse(outputStream, 404, HtmlView.notFound());
         } catch (Exception e) {
+            e.printStackTrace();
             try {
                 writeResponse.sendHtmlResponse(outputStream, 500, "<html><body><h1>Помилка сервера</h1><p>Не вдалося отримати дані.</p></body></html>");
             } catch (IOException ioException) {
