@@ -13,8 +13,12 @@
 | `/about` | GET | Про нас: команда, історія проєкту |
 | `/support` | GET | Підтримка: FAQ і форма звернення |
 | `/support` | POST | Приймає звернення, зберігає його в БД і перенаправляє (303) на `/support?sent=true` |
+| `/register` | GET | Реєстрація: форма створення акаунта (*необов'язкова*) |
+| `/register` | POST | Перевіряє дані, зберігає користувача з хешованим паролем і перенаправляє (303) на `/register?success=true` |
 | `/static/*` | GET | CSS, зображення, скрипти |
 | будь-що інше | — | 404 |
+
+Реєстрація **необов'язкова**: гру можна завантажити й написати в підтримку без акаунта.
 
 ## Технології
 
@@ -66,6 +70,7 @@
 - **Дані користувача в HTML завжди екрануються** (`HtmlEscaper`), щоб не було XSS.
 - **HTTP-запит читається повністю**: спочатку заголовки, потім тіло рівно за `Content-Length`.
 - **Після POST відповідь — редирект 303** (Post/Redirect/Get), щоб F5 не надсилав форму вдруге.
+- **Паролі ніколи не зберігаються у відкритому вигляді**: у БД лежить лише хеш PBKDF2 із сіллю (`javax.crypto`, без сторонніх бібліотек).
 
 ## Структура пакетів
 
@@ -85,21 +90,27 @@ src/main/java/by/spider/
 ├── controller/
 │   ├── HomeController.java       # /, /download
 │   ├── AboutController.java      # /about
-│   └── SupportController.java    # /support (GET, POST)
+│   ├── SupportController.java    # /support (GET, POST)
+│   └── RegistrationController.java # /register (GET, POST)
 ├── service/
 │   ├── DownloadService.java
 │   ├── SupportService.java
+│   ├── UserService.java          # реєстрація, перевірка унікальності email
+│   ├── PasswordHasher.java       # PBKDF2 + сіль
 │   └── ValidationException.java  # перетворюється на відповідь 400
 ├── repository/
 │   ├── DownloadRepository.java
 │   ├── JdbcDownloadRepository.java
 │   ├── SupportTicketRepository.java
-│   └── JdbcSupportTicketRepository.java
+│   ├── JdbcSupportTicketRepository.java
+│   ├── UserRepository.java
+│   └── JdbcUserRepository.java
 ├── db/
 │   └── ConnectionPool.java       # BlockingQueue<Connection>
 ├── model/
 │   ├── SupportTicket.java
-│   └── GameRelease.java
+│   ├── GameRelease.java
+│   └── User.java
 └── view/
     ├── TemplateEngine.java       # підставляє значення в HTML-шаблони
     └── HtmlEscaper.java
@@ -113,6 +124,7 @@ src/main/resources/
 │   ├── home.html
 │   ├── about.html
 │   ├── support.html
+│   ├── register.html
 │   └── 404.html
 └── static/
     ├── css/style.css
@@ -142,6 +154,15 @@ CREATE TABLE game_site.support_tickets (
     email       VARCHAR(255)  NOT NULL,
     message     TEXT          NOT NULL,
     created_at  TIMESTAMP     NOT NULL DEFAULT now()
+);
+
+-- Зареєстровані користувачі (реєстрація необов'язкова)
+CREATE TABLE game_site.users (
+    id             SERIAL PRIMARY KEY,
+    username       VARCHAR(50)   NOT NULL UNIQUE,
+    email          VARCHAR(255)  NOT NULL UNIQUE,
+    password_hash  VARCHAR(255)  NOT NULL,
+    created_at     TIMESTAMP     NOT NULL DEFAULT now()
 );
 ```
 
