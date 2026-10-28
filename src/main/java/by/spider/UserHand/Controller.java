@@ -30,7 +30,7 @@ public class Controller
                 case "name" -> builder.name(value);
                 case "lastname" -> builder.lastname(value);
                 case "email" -> builder.email(value);
-                case "number" -> builder.number(Integer.parseInt(value));
+                case "number" -> builder.number(value);
             }
         }
         HttpResponseWriter writeResponse = new HttpResponseWriter();

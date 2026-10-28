@@ -4,7 +4,7 @@ public class User {
     private final String name;
     private final String lastname;
     private final String email;
-    private final int number;
+    private final String number;
 
     public User(UserBuilder userBuilder){
         this.name = userBuilder.name;
@@ -25,7 +25,7 @@ public class User {
         return email;
     }
 
-    public int getNumber() {
+    public String getNumber() {
         return number;
     }
 
@@ -38,7 +38,7 @@ public class User {
         private String name = "Unknown";
         private String last_name = "Unknown";
         private String email = "Unknown";
-        private int number = 0;
+        private String number = "";
 
         public UserBuilder name(String name){
             if(name != null && !name.isBlank()){
@@ -58,10 +58,14 @@ public class User {
             }
             return this;
         }
-        public UserBuilder number(int number){
-            if (number > 0) {
-                this.number = number;
+        public UserBuilder number(String number){
+            if (number.isBlank() ) {
+                throw new RuntimeException("Enter correct phone number");
             }
+            if(number.matches("\\d+"))
+                this.number = number;
+            else
+                throw new RuntimeException("Enter correct phone number");
             return this;
         }
         public User build(){
